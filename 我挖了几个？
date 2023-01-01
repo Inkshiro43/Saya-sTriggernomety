@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<TriggernometryExport Version="1">
+  <ExportedFolder Id="a8880e70-a17f-4d17-bb32-67de3d4daa98" Name="我挖了多少个限时" Enabled="true">
+    <Folders />
+    <Triggers>
+      <Trigger Enabled="false" Name="0.2计数" Id="80ee36b8-c9f3-48fc-a294-de3ce9b69b3b" RegularExpression="ChatLog 00:0843::(?&lt;player&gt;.+?)获得了“(?&lt;item&gt;.*)”×?(?&lt;count&gt;\d{1,4})?。$" DebugLevel="Info">
+        <Actions>
+          <Action OrderNumber="1" VariableOp="SetString" VariableName="itemname" VariableExpression="${item}" TextAuraFontSize="9" TextAuraFontName="宋体" ActionType="Variable">
+            <Condition Enabled="false" Grouping="Or" />
+          </Action>
+          <Action OrderNumber="2" VariableOp="SetNumeric" VariableName="${total}" VariableExpression="${var:${toal}} + ${count}" TextAuraFontSize="8.25" TextAuraFontName="Microsoft Sans Serif" ActionType="Variable">
+            <Condition Enabled="true" Grouping="Or">
+              <ConditionSingle Enabled="true" ExpressionL="${count}" ExpressionTypeL="String" ExpressionR="^$" ExpressionTypeR="String" ConditionType="RegexNotMatch" />
+            </Condition>
+          </Action>
+          <Action OrderNumber="3" VariableOp="SetNumeric" VariableName="${total}" VariableExpression="${var:${total}} + 1" TextAuraFontSize="8.25" TextAuraFontName="Microsoft Sans Serif" ActionType="Variable">
+            <Condition Enabled="true" Grouping="Or">
+              <ConditionSingle Enabled="true" ExpressionL="${count}" ExpressionTypeL="String" ExpressionR="^$" ExpressionTypeR="String" ConditionType="RegexMatch" />
+            </Condition>
+          </Action>
+          <Action OrderNumber="4" NamedCallbackName="command" NamedCallbackParam="/e ${var:itemname}×${var:${total}}" TextAuraFontSize="9" TextAuraFontName="宋体" Enabled="False" ActionType="NamedCallback">
+            <Condition Enabled="false" Grouping="Or" />
+          </Action>
+          <Action OrderNumber="5" UseTTSTextExpression="叮叮" TextAuraFontSize="9" TextAuraFontName="宋体" Enabled="False" ActionType="UseTTS">
+            <Condition Enabled="false" Grouping="Or" />
+          </Action>
+        </Actions>
+        <Condition Enabled="true" Grouping="Or">
+          <ConditionSingle Enabled="true" ExpressionL="${player}" ExpressionTypeL="String" ExpressionR="${_ffxivplayer}" ExpressionTypeR="String" ConditionType="StringEqualCase" />
+        </Condition>
+        <Conditions />
+      </Trigger>
+      <Trigger Enabled="true" Name="0.1开始" Id="27626a59-5878-4a2a-afdb-ef614ac9f1cf" RegularExpression="ChatLog 00:0843::(?&lt;player&gt;.+?)开始了(采掘|碎石|采伐)作业。">
+        <Actions>
+          <Action OrderNumber="1" TextAuraFontSize="9" TextAuraFontName="宋体" TriggerOp="EnableTrigger" TriggerId="80ee36b8-c9f3-48fc-a294-de3ce9b69b3b" ActionType="Trigger">
+            <Condition Enabled="false" Grouping="Or" />
+          </Action>
+          <Action OrderNumber="2" VariableOp="SetNumeric" VariableName="total" VariableExpression="0" TextAuraFontSize="9" TextAuraFontName="宋体" ActionType="Variable">
+            <Condition Enabled="false" Grouping="Or" />
+          </Action>
+        </Actions>
+        <Condition Enabled="true" Grouping="Or">
+          <ConditionSingle Enabled="true" ExpressionL="${player}" ExpressionTypeL="String" ExpressionR="${_ffxivplayer}" ExpressionTypeR="String" ConditionType="StringEqualCase" />
+        </Condition>
+        <Conditions />
+      </Trigger>
+      <Trigger Enabled="true" Name="0.3计算" Id="b28554fb-a2b2-43e1-bf27-438e2af17857" RegularExpression="ChatLog 00:0843::(?&lt;player&gt;.+?)结束了(采掘|碎石|采伐)作业。">
+        <Actions>
+          <Action OrderNumber="1" NamedCallbackName="command" NamedCallbackParam="/e 我这一通连打获得了${var:itemname}×${var:${total}}。" TextAuraFontSize="9" TextAuraFontName="宋体" ActionType="NamedCallback" ExecutionDelayExpression="10">
+            <Condition Enabled="false" Grouping="Or" />
+          </Action>
+          <Action OrderNumber="2" TextAuraFontSize="9" TextAuraFontName="宋体" TriggerOp="DisableTrigger" TriggerId="80ee36b8-c9f3-48fc-a294-de3ce9b69b3b" ActionType="Trigger">
+            <Condition Enabled="false" Grouping="Or" />
+          </Action>
+        </Actions>
+        <Condition Enabled="false" Grouping="Or" />
+        <Conditions />
+      </Trigger>
+      <Trigger Enabled="true" Name="0.4结束" Id="fde17e6c-9c6f-479c-abf6-d2428530a33f" RegularExpression="ChatLog 00:0843::(?&lt;player&gt;.+?)结束了(采掘|碎石|采伐)作业。">
+        <Actions>
+          <Action OrderNumber="1" VariableOp="UnsetAll" TextAuraFontSize="9" TextAuraFontName="宋体" ActionType="Variable" ExecutionDelayExpression="2000">
+            <Condition Enabled="false" Grouping="Or" />
+          </Action>
+        </Actions>
+        <Condition Enabled="false" Grouping="Or" />
+        <Conditions />
+      </Trigger>
+    </Triggers>
+  </ExportedFolder>
+</TriggernometryExport>
